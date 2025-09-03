@@ -1,12 +1,12 @@
-import { LoginScreen } from "./views/login/LoginScreen"
-import { SignUpScreen } from "./views/signup/SignUpScreen"
+import { BrowserRouter } from "react-router-dom"
+import { AppRoutes } from "./routes"
 
 function App() {
 
   return (
-    <>
-      <SignUpScreen />
-    </>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   )
 }
 

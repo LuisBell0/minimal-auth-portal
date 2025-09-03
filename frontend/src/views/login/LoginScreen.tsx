@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function LoginScreen() {
     return(
         <>
@@ -33,11 +35,11 @@ export function LoginScreen() {
                             </div>
                             <p className="text-center">
                                 Forgot Password?
-                                <a href="#" className=""> Click here</a>
+                                <Link to="/forgot" className=""> Click here</Link>
                             </p>
                             <p className="text-center">
                                 Don't have an account?
-                                <a href=""> Sign Up Here</a>
+                                <Link to="/signup"> Sign Up Here</Link>
                             </p>
                         </form>
                     </div>
