@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export function NotFoundScreen(): JSX.Element {
+export function NotFoundScreen() {
   return (
     <main
       className="min-h-screen flex items-center justify-center bg-white text-gray-800"
@@ -18,10 +18,7 @@ export function NotFoundScreen(): JSX.Element {
             focusable={false}
             className="text-gray-400"
           >
-            <path
-              fill="currentColor"
-              d="M11 9h2v6h-2zM11 17h2v2h-2z"
-            />
+            <path fill="currentColor" d="M11 9h2v6h-2zM11 17h2v2h-2z" />
             <path
               fill="currentColor"
               d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
@@ -29,7 +26,9 @@ export function NotFoundScreen(): JSX.Element {
           </svg>
         </div>
 
-        <h1 id="notfound-title" className="mt-8 text-3xl font-semibold">Page not found</h1>
+        <h1 id="notfound-title" className="mt-8 text-3xl font-semibold">
+          Page not found
+        </h1>
         <p className="mt-3 text-sm text-gray-600">
           The page you’re looking for doesn’t exist or has been moved.
         </p>
@@ -50,7 +49,9 @@ export function NotFoundScreen(): JSX.Element {
           </button>
         </div>
 
-        <p className="mt-6 text-xs text-gray-400">If you think this is an error, contact support.</p>
+        <p className="mt-6 text-xs text-gray-400">
+          If you think this is an error, contact support.
+        </p>
       </div>
     </main>
   );

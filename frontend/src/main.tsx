@@ -1,13 +1,11 @@
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import { createRoot } from "react-dom/client";
+import "./index.css";
 import App from "./App";
-import axios from 'axios'
+import axios from "axios";
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000'
-axios.defaults.withCredentials = true
+axios.defaults.baseURL = "http://127.0.0.1:8000";
+axios.defaults.withCredentials = true;
 
-const root = createRoot(document.getElementById('root')!);
+const root = createRoot(document.getElementById("root")!);
 
-root.render(
-  <App />
-)
+root.render(<App />);

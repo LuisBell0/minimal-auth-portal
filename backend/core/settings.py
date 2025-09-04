@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-from urllib.parse import urlparse, parse_qsl
+from urllib.parse import parse_qsl, urlparse
 from datetime import timedelta
 
 load_dotenv()
@@ -88,29 +88,17 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 
-# DEVELOPMENT LOCAL DATABASE
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': tmpPostgres.path.replace('/', ''),
+       'USER': tmpPostgres.username,
+       'PASSWORD': tmpPostgres.password,
+       'HOST': tmpPostgres.hostname,
+       'PORT': 5432,
+       'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
     }
 }
-
-# TODO: UNCOMMENT FOR NEONDB USE
-
-#DATABASES = {
- #   'default': {
-  #      'ENGINE': 'django.db.backends.postgresql',
-   #     'NAME': tmpPostgres.path.replace('/', ''),
-    #    'USER': tmpPostgres.username,
-     #   'PASSWORD': tmpPostgres.password,
-      #  'HOST': tmpPostgres.hostname,
-      #  'PORT': 5432,
-       # 'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
-    #}
-#}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -178,12 +166,14 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
+    "EMAIL_FRONTEND_DOMAIN": "localhost:5173",
+    "EMAIL_FRONTEND_SITE_NAME": "Minimal Auth Portal",
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SEND_ACTIVATION_EMAIL': True,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
-    'ACTIVATION_URL': 'api/activate/{uid}/{token}/',
-    'PASSWORD_RESET_CONFIRM_URL': 'api/password-reset/confirm/{uid}/{token}/',
+    'ACTIVATION_URL': 'activate/{uid}/{token}/',
+    'PASSWORD_RESET_CONFIRM_URL': 'forgot/change/{uid}/{token}/',
 }
 
 CORS_ALLOWED_ORIGINS = [

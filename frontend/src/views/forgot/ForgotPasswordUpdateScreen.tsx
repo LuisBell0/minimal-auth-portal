@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuthStore } from "../../stores/userStore";
+import { Link, useParams } from "react-router-dom";
 import { LoadingComponent } from "../../components/LoadingComponent";
+import { useAuthStore } from "../../stores/userStore";
+import { useState } from "react";
 
-export function ForgotPassword() {
-  const { forgotPassword, loading } = useAuthStore();
-  const [email, setEmail] = useState("");
+export function ForgotPasswordUpdateScreen() {
+  const { uid, token } = useParams<{ uid?: string; token?: string }>();
+  const { loading, resetPassword } = useAuthStore();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -15,17 +17,21 @@ export function ForgotPassword() {
     setSuccessMessage(null);
 
     try {
-      await forgotPassword(email);
+      if (typeof uid === "undefined" || typeof token === "undefined") {
+        throw new Error("Invalid password reset link.");
+      }
+      await resetPassword(uid, token, password, confirmPassword);
       setSuccessMessage(
-        "If that email exists in our system, we sent password reset instructions."
+        "Your password has been reset successfully. You can now log in with your new password."
       );
-      setEmail("");
-      window.setTimeout(() => setSuccessMessage(null), 6000);
+      setPassword("");
+      setConfirmPassword("");
     } catch (err: any) {
       setErrorMessage(
         err?.response?.data?.message ??
-          "Failed to send reset link. Try again later."
+          "An unexpected error occurred trying to reset your password. Try again later."
       );
+      return;
     }
   };
 
@@ -38,9 +44,9 @@ export function ForgotPassword() {
           <div className="w-full max-w-md">
             <div className="bg-white p-8 shadow-lg rounded-lg">
               <div className="text-center mb-4">
-                <h1 className="text-3xl font-bold">Forgot Password</h1>
+                <h1 className="text-3xl font-bold">Reset Password</h1>
                 <p className="text-gray-600 text-sm mt-2">
-                  Enter your email and we’ll send you reset instructions
+                  Enter your new password below
                 </p>
               </div>
 
@@ -60,12 +66,25 @@ export function ForgotPassword() {
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="w-full p-2 border rounded-md border-black"
-                    placeholder="Enter your email"
+                    placeholder="Enter your new password"
+                    disabled={loading}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full p-2 border rounded-md border-black"
+                    placeholder="Re enter your new password"
                     disabled={loading}
                     required
                   />
@@ -77,12 +96,12 @@ export function ForgotPassword() {
                     className="w-full bg-green-500 text-white py-2 rounded-md cursor-pointer"
                     disabled={loading}
                   >
-                    {loading ? <LoadingComponent /> : "Send Reset Link"}
+                    {loading ? <LoadingComponent /> : "Set New Password"}
                   </button>
                 </div>
 
                 <p className="text-center">
-                  Remember your password?
+                  Remembered your password?
                   <Link to="/login" className="ml-1 text-blue-600">
                     Back to Login
                   </Link>
