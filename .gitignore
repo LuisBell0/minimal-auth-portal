@@ -4,6 +4,7 @@ __pycache__/
 db.sqlite3
 *.sqlite3
 .env
+.venv
 
 # Django
 /static/
@@ -44,3 +45,4 @@ ehthumbs.db
 Desktop.ini
 
 # Others
+*.http

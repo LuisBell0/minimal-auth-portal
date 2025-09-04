@@ -2,6 +2,8 @@ POST http://127.0.0.1:8000/auth/users/activation/
 Content-Type: application/json
 
 {
-    "uid": "Mw",
-    "token": "cvh651-89ee1d8f0ef049fb2c5a88c5a457e7be"
-}
+    "uid": "",
+    "token": ""
+},
+
+###

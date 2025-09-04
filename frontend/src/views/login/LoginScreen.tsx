@@ -1,6 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../stores/userStore";
 
 export function LoginScreen() {
+    const { signIn } = useAuthStore();
+    const navigate = useNavigate();
+
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement).value;
+        const password = (e.currentTarget.elements.namedItem("password") as HTMLInputElement).value;
+        try {
+            await signIn(email, password);
+            navigate("/dashboard"); 
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     return(
         <>
             <div className="flex flex-col justify-center items-center min-h-screen px-4 text-black">
@@ -9,13 +26,13 @@ export function LoginScreen() {
                         <div className="text-center mb-4">
                             <h1 className="text-4xl font-bold">Minimal Auth Portal</h1>
                         </div>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <input
                                 type="text"
-                                name="username"
+                                name="email"
                                 className="w-full p-2 border rounded-md border-black"
-                                placeholder="Username or Email"
+                                placeholder="Email"
                                 />
                             </div>
                             <div className="mb-3">

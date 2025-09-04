@@ -10,21 +10,7 @@ export function SignUpScreen() {
                             <h1 className="text-4xl font-bold">Create an Account</h1>
                         </div>
                         <form>
-                            <div className="grid grid-flow-col grid-rows-3 gap-4">
-                                <div className="">
-                                    <input
-                                    name="firstName"
-                                    className="w-full p-2 border rounded-md"
-                                    placeholder="First Name"
-                                    />
-                                </div>
-                                <div className="">
-                                    <input
-                                    name="lastName"
-                                    className="w-full p-2 border rounded-md"
-                                    placeholder="Last Name"
-                                    />
-                                </div>
+                            <div className="grid grid-flow-col grid-rows-4 sm:grid-rows-2 gap-4">
                                 <div className="">
                                     <input
                                     name="email"

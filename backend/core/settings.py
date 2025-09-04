@@ -32,7 +32,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 AUTH_USER_MODEL = 'auth_system.CustomUser'
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     'djoser',
     'auth_system',
 
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,17 +88,28 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 
+# DEVELOPMENT LOCAL DATABASE
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
-        'PORT': 5432,
-        'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# TODO: UNCOMMENT FOR NEONDB USE
+
+#DATABASES = {
+ #   'default': {
+  #      'ENGINE': 'django.db.backends.postgresql',
+   #     'NAME': tmpPostgres.path.replace('/', ''),
+    #    'USER': tmpPostgres.username,
+     #   'PASSWORD': tmpPostgres.password,
+      #  'HOST': tmpPostgres.hostname,
+      #  'PORT': 5432,
+       # 'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
+    #}
+#}
 
 
 # Password validation
@@ -143,9 +155,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # REST_FRAMEWORK
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'auth_system.authentication.CookieJWTAuthentication',
+    ]
 }
 
 # Set the email backend
@@ -173,3 +185,9 @@ DJOSER = {
     'ACTIVATION_URL': 'api/activate/{uid}/{token}/',
     'PASSWORD_RESET_CONFIRM_URL': 'api/password-reset/confirm/{uid}/{token}/',
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+CORS_ALLOW_CREDENTIALS = True
